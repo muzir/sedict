@@ -55,17 +55,15 @@ jobs:
           command: |
             ./gradlew test
       - run:
-          name: Generate code coverage report
-          command:
-            ./gradlew jacocoTestReport
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
       - store_test_results:
-          path: build/test-results/test
+          path: ~/test-results
       - store_artifacts:
-          path: build/test-results/test
-          when: always
-      - store_artifacts:
-          path: build/reports/jacoco/test/html
-          when: always
+          path: ~/test-results/junit
       - run:
           name: Assemble JAR
           command: |
