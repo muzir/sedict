@@ -12,11 +12,12 @@ import java.sql.Statement;
 
 public class BaseIntegrationTest {
 
-    private final String DATABASE_URL = "jdbc:postgresql://localhost:15433/stackoverflow";
+
     private final String USER = "postgres";
     private final String PASSWORD = "mysecretpassword";
 
     protected final DataSource dataSource;
+    private final String databaseUrl;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -27,12 +28,13 @@ public class BaseIntegrationTest {
     }
 
     public BaseIntegrationTest() {
+        this.databaseUrl = new AppConfig().loadProperties("ci-test");
         this.dataSource = createTestDataSource();
     }
 
     private DataSource createTestDataSource() {
         PGSimpleDataSource pgDataSource = new PGSimpleDataSource();
-        pgDataSource.setUrl(DATABASE_URL);
+        pgDataSource.setUrl(databaseUrl);
         pgDataSource.setUser(USER);
         pgDataSource.setPassword(PASSWORD);
         return pgDataSource;
