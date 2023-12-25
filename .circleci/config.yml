@@ -41,12 +41,21 @@ jobs:
           POSTGRES_PASSWORD: mysecretpassword
           POSTGRES_DB: stackoverflow
     steps:
-      - checkout
+      - run:
+          name: Start PostgreSQL container
+          command: |
+            docker run -d -p 15433:5432 \
+              --name my_postgres_container \
+              -e POSTGRES_USER=postgres \
+              -e POSTGRES_PASSWORD=mysecretpassword \
+              -e POSTGRES_DB=stackoverflow \
+              cimg/postgres:16.0
       - run:
           name: Connect to database
           command: |
             export PGPASSWORD=mysecretpassword
             psql -h localhost -p 5432 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
+      - checkout
       - attach_workspace:
           at: .
       - run:
