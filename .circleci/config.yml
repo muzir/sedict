@@ -34,24 +34,19 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
-      - image: cimg/base:2021.04
       - image: cimg/openjdk:17.0
+      - image: cimg/postgres:16.0
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: stackoverflow
     steps:
-      - run:
-          name: Start PostgreSQL container
-          command: |
-            docker run -d -p 15433:5432 \
-              --name my_postgres_container \
-              -e POSTGRES_USER=postgres \
-              -e POSTGRES_PASSWORD=mysecretpassword \
-              -e POSTGRES_DB=stackoverflow \
-              cimg/postgres:16.0
+      - checkout
       - run:
           name: Connect to database
           command: |
             export PGPASSWORD=mysecretpassword
             psql -h localhost -p 5432 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
-      - checkout
       - attach_workspace:
           at: .
       - run:
