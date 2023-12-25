@@ -40,13 +40,14 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mysecretpassword
           POSTGRES_DB: stackoverflow
+    PGPORT: 15433
     steps:
       - checkout
       - run:
           name: Connect to database
           command: |
             export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 5432 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
+            psql -h localhost -p 15433 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
       - run:

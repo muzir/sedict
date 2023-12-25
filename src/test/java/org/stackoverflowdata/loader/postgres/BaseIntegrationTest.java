@@ -12,7 +12,7 @@ import java.sql.Statement;
 
 public class BaseIntegrationTest {
 
-    private final String DATABASE_URL = "jdbc:postgresql://localhost:5432/stackoverflow";
+    private final String DATABASE_URL = "jdbc:postgresql://localhost:15433/stackoverflow";
     private final String USER = "postgres";
     private final String PASSWORD = "mysecretpassword";
 
