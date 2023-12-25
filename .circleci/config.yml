@@ -33,7 +33,6 @@ jobs:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-      PGPORT: 15433
     docker:
       - image: cimg/openjdk:17.0
       - image: cimg/postgres:16.0
@@ -48,7 +47,7 @@ jobs:
           name: Connect to database
           command: |
             export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 15433 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
+            psql -h localhost -p 5432 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
       - run:
