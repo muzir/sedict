@@ -43,6 +43,12 @@ jobs:
           POSTGRES_PORT: 15433
     steps:
       - checkout
+      - run:
+          name: Connect to database
+          # Use "./gradlew test" instead if tests are not run in parallel
+          command: |
+            export PGPASSWORD=mysecretpassword
+            psql -h localhost -p 15433 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
       - run:
@@ -50,12 +56,6 @@ jobs:
           # Use "./gradlew test" instead if tests are not run in parallel
           command: |
             ./gradlew test
-      - run:
-          name: Connect to database
-          # Use "./gradlew test" instead if tests are not run in parallel
-          command: |
-            export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 15433 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
       - run:
           name: Generate code coverage report
           command:
