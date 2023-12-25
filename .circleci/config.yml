@@ -38,7 +38,9 @@ jobs:
       - image: cimg/postgres:16.0
         environment:
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
           POSTGRES_DB: stackoverflow
+          POSTGRES_PORT: 15433
     steps:
       - checkout
       - attach_workspace:
@@ -48,6 +50,12 @@ jobs:
           # Use "./gradlew test" instead if tests are not run in parallel
           command: |
             ./gradlew test
+      - run:
+          name: Connect to database
+          # Use "./gradlew test" instead if tests are not run in parallel
+          command: |
+            export PGPASSWORD=mysecretpassword
+            psql -h localhost -p 15433 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
       - run:
           name: Generate code coverage report
           command:
