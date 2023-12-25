@@ -46,7 +46,6 @@ jobs:
           name: Connect to database
           command: |
             export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE stackoverflow;"
             psql -h localhost -p 5432 -U postgres -c "SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
