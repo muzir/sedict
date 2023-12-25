@@ -40,15 +40,13 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mysecretpassword
           POSTGRES_DB: stackoverflow
-          POSTGRES_PORT: 15433
     steps:
       - checkout
       - run:
           name: Connect to database
-          # Use "./gradlew test" instead if tests are not run in parallel
           command: |
             export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 5432 -U postgres -c "\c postgres; CREATE DATABASE stackoverflow; SELECT * FROM pg_catalog.pg_tables;"
+            psql -h localhost -p 5432 -U postgres -c "\c postgres; SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
       - run:
