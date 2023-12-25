@@ -48,7 +48,7 @@ jobs:
           # Use "./gradlew test" instead if tests are not run in parallel
           command: |
             export PGPASSWORD=mysecretpassword
-            psql -h localhost -p 5432 -U postgres -d stackoverflow -c "SELECT * FROM pg_catalog.pg_tables;"
+            psql -h localhost -p 5432 -U postgres -d stackoverflow -c "CREATE DATABASE stackoverflow; SELECT * FROM pg_catalog.pg_tables;"
       - attach_workspace:
           at: .
       - run:
