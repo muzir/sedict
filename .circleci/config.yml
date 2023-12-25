@@ -34,12 +34,8 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
+      - image: cimg/base:2021.04
       - image: cimg/openjdk:17.0
-      - image: cimg/postgres:16.0
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: mysecretpassword
-          POSTGRES_DB: stackoverflow
     steps:
       - run:
           name: Start PostgreSQL container
