@@ -1,0 +1,4 @@
+#!/bin/bash
+# sedict
+
+java -jar build/libs/sedict-0.1-all.jar "$@"
