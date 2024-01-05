@@ -22,7 +22,6 @@ class FileStreamParserTest extends BaseIntegrationTest {
     private TagRepository tagRepository = new TagRepositoryImpl(dataSource);
     private PostRepository postRepository = new PostRepositoryImpl(dataSource);
 
-
     @Test
     void testSaveTagSuccessfully() throws XMLStreamException, FileNotFoundException {
         var fileStreamParser =

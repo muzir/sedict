@@ -5,11 +5,14 @@ import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
 import com.github.rvesse.airline.annotations.OptionType;
 import com.github.rvesse.airline.annotations.restrictions.AllowedRawValues;
-import com.github.rvesse.airline.annotations.restrictions.MutuallyExclusiveWith;
-import com.github.rvesse.airline.annotations.restrictions.Pattern;
+import com.github.rvesse.airline.annotations.restrictions.Required;
 import com.github.rvesse.airline.annotations.restrictions.RequiredOnlyIf;
+import org.stackoverflowdata.loader.postgres.PostgresDataSource;
+import org.stackoverflowdata.loader.postgres.config.DatabaseConnectionRepository;
 
-@Command(name = "setup-db", description = "Setup our database")
+import java.sql.SQLException;
+
+@Command(name = "setup-db", description = "Setup your database")
 public class DatabaseSetupCommand implements Runnable {
     private HelpOption<DatabaseSetupCommand> help;
 
@@ -17,27 +20,27 @@ public class DatabaseSetupCommand implements Runnable {
         this.help = new HelpOption<>();
     }
 
-    @Option(type = OptionType.COMMAND,
-            name = {"-d", "--database"},
-            description = "Type of RDBMS.",
-            title = "RDBMS type: mysql|postgresql|mongodb")
-    @AllowedRawValues(allowedValues = {"mysql", "postgres", "mongodb"})
-    protected String rdbmsMode = "mysql";
-
-    @Option(type = OptionType.COMMAND,
-            name = {"--rdbms:url", "--url"},
-            description = "URL to use for connection to RDBMS.",
-            title = "RDBMS URL")
-    @MutuallyExclusiveWith(tag = "mode")
-    @Pattern(pattern = "^(http://.*):(d*)(.*)u=(.*)&p=(.*)")
-    protected String rdbmsUrl = "";
-
+    @Required
     @Option(type = OptionType.COMMAND,
             name = {"--rdbms:host", "--host"},
             description = "Host to use for connection to RDBMS.",
             title = "RDBMS host")
-    @MutuallyExclusiveWith(tag = "mode")
     protected String rdbmsHost = "";
+
+    @RequiredOnlyIf(names = {"--rdbms:host", "--host"})
+    @Option(type = OptionType.COMMAND,
+            name = {"-t", "--type"},
+            description = "Type of RDBMS.",
+            title = "RDBMS type: postgres")
+    @AllowedRawValues(allowedValues = {"postgres"})
+    protected String rdbmsType = "postgres";
+
+    @RequiredOnlyIf(names = {"--rdbms:host", "--host"})
+    @Option(type = OptionType.COMMAND,
+            name = {"-d", "--database"},
+            description = "Database name.",
+            title = "Database name")
+    protected String databaseName = "";
 
     @RequiredOnlyIf(names = {"--rdbms:host", "--host"})
     @Option(type = OptionType.COMMAND,
@@ -53,16 +56,28 @@ public class DatabaseSetupCommand implements Runnable {
             title = "RDBMS password")
     protected String rdbmsPassword;
 
+    @RequiredOnlyIf(names = {"--rdbms:host", "--host"})
+    @Option(type = OptionType.COMMAND,
+            name = {"--rdbms:port", "--port"},
+            description = "Port for login to RDBMS.",
+            title = "RDBMS port")
+    protected String rdbmsPort;
+
     @Override
     public void run() {
-        //skipping store our choices...
-        if (!help.showHelpIfRequested()) {
-            if (!"".equals(rdbmsHost)) {
-                System.out.println("Connecting to database host: " + rdbmsHost);
-                System.out.println("Credential: " + rdbmsUser + " / " + rdbmsPassword);
-            } else {
-                System.out.println("Connecting to database url: " + rdbmsUrl);
-            }
+        String databaseUrl = "jdbc:postgresql://" + rdbmsHost + ":" + rdbmsPort + "/" + databaseName;
+        System.out.println("Connecting to database: " + databaseUrl);
+        System.out.println("Credentials: " + rdbmsUser + " / " + rdbmsPassword);
+        PostgresDataSource postgresDataSource = new PostgresDataSource(databaseUrl, rdbmsUser, rdbmsPassword);
+        DatabaseConnectionRepository databaseConnectionRepository =
+                new DatabaseConnectionRepository(postgresDataSource.getDataSource());
+        try {
+            databaseConnectionRepository.connect();
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format(
+                    "Failed to connect to database, check your database url %s and credentials, user: %, password:%s",
+                    databaseUrl, rdbmsUser, rdbmsPassword));
         }
+        System.out.println("Connection established: " + postgresDataSource.getDataSource().toString());
     }
 }

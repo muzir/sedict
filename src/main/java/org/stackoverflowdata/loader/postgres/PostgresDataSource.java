@@ -20,6 +20,14 @@ public class PostgresDataSource {
         this.dataSource = pgDataSource;
     }
 
+    public PostgresDataSource(String databaseUrl, String user, String password) {
+        PGSimpleDataSource pgDataSource = new PGSimpleDataSource();
+        pgDataSource.setUrl(databaseUrl);
+        pgDataSource.setUser(user);
+        pgDataSource.setPassword(password);
+        this.dataSource = pgDataSource;
+    }
+
     public DataSource getDataSource() {
         return dataSource;
     }

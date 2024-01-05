@@ -3,7 +3,6 @@ package org.stackoverflowdata.loader.postgres.post;
 import org.junit.jupiter.api.Test;
 import org.stackoverflowdata.loader.postgres.BaseIntegrationTest;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class PostRepositoryTest extends BaseIntegrationTest {
     private PostRepository postRepository = new PostRepositoryImpl(dataSource);
 
     @Test
-    public void testSavePostsBatch() throws SQLException {
+    public void testSavePostsBatch() {
         var post = Post.builder()
                 .id(1L)
                 .postTypeId(1L)
