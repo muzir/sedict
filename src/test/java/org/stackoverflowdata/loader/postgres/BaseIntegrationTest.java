@@ -27,7 +27,7 @@ public class BaseIntegrationTest {
     }
 
     public BaseIntegrationTest() {
-        this.databaseUrl = new AppConfig().loadProperties("ci-test");
+        this.databaseUrl = new AppConfig().loadProperties("local-test");
         this.dataSource = createTestDataSource();
     }
 
@@ -80,5 +80,4 @@ public class BaseIntegrationTest {
             }
         }
     }
-
 }
