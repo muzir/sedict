@@ -28,28 +28,6 @@ public class TagRepositoryImpl implements TagRepository {
                     EXCERPT_POST_ID, WIKI_POST_ID, ID);
     private static final String FIND_TAG_BY_ID_QUERY = "SELECT * FROM tags WHERE %s = ?".formatted(ID);
 
-    public int save(Tag tag) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_TAG_QUERY)) {
-
-            preparedStatement.setInt(1, tag.getId());
-            preparedStatement.setString(2, tag.getTagName());
-            preparedStatement.setInt(3, tag.getCount());
-            preparedStatement.setInt(4, tag.getExcerptPostId());
-            preparedStatement.setInt(5, tag.getWikiPostId());
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1); // Returning the generated ID
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately in a real-world scenario
-        }
-
-        return -1; // Return -1 if the insertion fails
-    }
-
     @Override
     public void saveBatch(List<Tag> tags) {
         try (Connection connection = dataSource.getConnection();

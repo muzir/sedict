@@ -12,7 +12,6 @@ import java.sql.Statement;
 
 public class BaseIntegrationTest {
 
-
     private final String USER = "postgres";
     private final String PASSWORD = "mysecretpassword";
 
@@ -68,7 +67,7 @@ public class BaseIntegrationTest {
                 }
 
                 // Execute the batch of commands
-                int[] updateCounts = statement.executeBatch();
+                statement.executeBatch();
 
                 // Commit the transaction
                 connection.commit();
@@ -81,5 +80,4 @@ public class BaseIntegrationTest {
             }
         }
     }
-
 }
