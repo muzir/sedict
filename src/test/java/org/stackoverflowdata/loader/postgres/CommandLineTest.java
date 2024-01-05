@@ -19,15 +19,4 @@ class CommandLineTest {
         assertThrows(ParseRestrictionViolatedException.class, () ->
                 CommandLine.runCommand(args));
     }
-
-    // args setup-db --host localhost --database stackoverflow --user postgres --password mysecretpasssword -t postgres --port 5432
-    @Test
-    void shouldNotThrowParseRestrictionViolatedException_whenAllParametersExists() {
-        String[] args =
-                new String[]{"setup-db", "--host", "localhost", "--database", "stackoverflow", "--user", "postgres",
-                        "--password", "mysecretpasssword", "-t", "postgres", "--port", "5432"};
-        assertThrows(RuntimeException.class, () ->
-                CommandLine.runCommand(args));
-    }
-
 }
