@@ -28,4 +28,12 @@ public class FileStreamReader {
         return XMLInputFactory.newInstance().createXMLStreamReader(
                 fileInputStream);
     }
+
+    public void processFileContent() throws XMLStreamException, FileNotFoundException {
+        // https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html, totalEntitySizeLimit, jdk.xml.totalEntitySizeLimit
+        // A positive integer. A value less than or equal to 0 indicates no limit. If the value is not an integer, a NumericFormatException is thrown.
+        System.setProperty("jdk.xml.totalEntitySizeLimit", "0");
+        var xmlStreamReader = this.getXmlStreamReader();
+        new FileStreamParser(xmlStreamReader).parseXmlData();
+    }
 }

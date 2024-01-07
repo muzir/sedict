@@ -5,8 +5,13 @@ import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
 import com.github.rvesse.airline.annotations.OptionType;
 import com.github.rvesse.airline.annotations.restrictions.AllowedRawValues;
+import com.github.rvesse.airline.parser.errors.ParseException;
+import org.stackoverflowdata.loader.postgres.xml.FileStreamReader;
 
-import java.util.Arrays;
+import javax.xml.stream.XMLStreamException;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Command(name = "load-db", description = "Loading database")
 public class LoadDbCommand implements Runnable {
@@ -21,13 +26,22 @@ public class LoadDbCommand implements Runnable {
             name = {"-f", "--files"},
             description = "Load xml files to RDBMS tables.",
             title = "XML files")
-    @AllowedRawValues(allowedValues = {"posts.xml", "tags.xml"})
-    private String files;
+    @AllowedRawValues(allowedValues = {"posts.xml", "Tags.xml"})
+    protected List<String> files = new ArrayList<>();
 
     @Override
     public void run() {
-
         if (!help.showHelpIfRequested())
-            System.out.println("Files: " + files);
+            files.forEach(file -> {
+                System.out.println("Loading file: " + file);
+                try {
+                    FileStreamReader fileStreamReader = new FileStreamReader(file);
+                    fileStreamReader.processFileContent();
+                } catch (XMLStreamException e) {
+                    throw new ParseException(e.getMessage());
+                } catch (FileNotFoundException e) {
+                    throw new ParseException(e.getMessage());
+                }
+            });
     }
 }
