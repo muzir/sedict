@@ -22,8 +22,7 @@ public class FileStreamParser {
 
     public FileStreamParser(XMLStreamReader xmlStreamReader) {
         this.xmlStreamReader = xmlStreamReader;
-        var pgDataSource = new PostgresDataSource();
-        this.dataSource = pgDataSource.getDataSource();
+        this.dataSource = PostgresDataSource.getDataSource();
     }
 
     public void parseXmlData() throws XMLStreamException {

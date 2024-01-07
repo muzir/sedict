@@ -1,6 +1,7 @@
 package org.stackoverflowdata.loader.postgres;
 
 import org.postgresql.ds.PGSimpleDataSource;
+import org.stackoverflowdata.loader.postgres.config.DatabaseConnectionRepository;
 
 import javax.sql.DataSource;
 
@@ -10,7 +11,7 @@ public class PostgresDataSource {
     private final String USER = "postgres";
     private final String PASSWORD = "mysecretpassword";
 
-    private final DataSource dataSource;
+    private static DataSource dataSource = null;
 
     public PostgresDataSource() {
         PGSimpleDataSource pgDataSource = new PGSimpleDataSource();
@@ -28,7 +29,7 @@ public class PostgresDataSource {
         this.dataSource = pgDataSource;
     }
 
-    public DataSource getDataSource() {
+    public static DataSource getDataSource() {
         return dataSource;
     }
 }
