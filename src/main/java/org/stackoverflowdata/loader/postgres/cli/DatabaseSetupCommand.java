@@ -1,4 +1,4 @@
-package org.stackoverflowdata.loader.postgres.cli.examples;
+package org.stackoverflowdata.loader.postgres.cli;
 
 import com.github.rvesse.airline.HelpOption;
 import com.github.rvesse.airline.annotations.Command;
@@ -65,6 +65,9 @@ public class DatabaseSetupCommand implements Runnable {
 
     @Override
     public void run() {
+        if (help.showHelpIfRequested()) {
+            return;
+        }
         String databaseUrl = "jdbc:postgresql://" + rdbmsHost + ":" + rdbmsPort + "/" + databaseName;
         System.out.println("Connecting to database: " + databaseUrl);
         System.out.println("Credentials: " + rdbmsUser + " / " + rdbmsPassword);
