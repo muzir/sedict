@@ -4,17 +4,11 @@ import com.github.rvesse.airline.annotations.Cli;
 import com.github.rvesse.airline.help.Help;
 import com.github.rvesse.airline.parser.errors.ParseException;
 import org.stackoverflowdata.loader.postgres.cli.DatabaseSetupCommand;
-import org.stackoverflowdata.loader.postgres.cli.LoadDbCommand;
-import org.stackoverflowdata.loader.postgres.xml.FileStreamParser;
-import org.stackoverflowdata.loader.postgres.xml.FileStreamReader;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.FileNotFoundException;
 
 @Cli(name = "sedict",
         description = "Stack exchange database import command line tool",
         defaultCommand = Help.class,
-        commands = {DatabaseSetupCommand.class, LoadDbCommand.class, Help.class})
+        commands = {DatabaseSetupCommand.class, Help.class})
 public class CommandLine {
 
     public static void main(String... args) {
