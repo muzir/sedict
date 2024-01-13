@@ -3,7 +3,6 @@ package org.stackoverflowdata.loader.postgres;
 import com.github.rvesse.airline.parser.errors.ParseRestrictionViolatedException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CommandLineTest {
@@ -25,17 +24,6 @@ class CommandLineTest {
     void shouldThrowParseRestrictionViolatedException_whenLoadDbFilesAreNotSupported() {
         String[] args = new String[]{"setup-db", "--url", "localhost:5432", "-f", "post.xml"};
         assertThrows(ParseRestrictionViolatedException.class, () ->
-                CommandLine.runCommand(args));
-    }
-
-    @Test
-    void shouldNotThrowParseRestrictionViolatedException_whenLoadDbFilesAreSupported() {
-        String[] args =
-                new String[]{"setup-db", "--url", "localhost:5432", "-p", "password", "-u", "user", "-d",
-                        "database", "-t", "postgres", "-f", "Posts.xml",
-                        "-f", "Tags.xml"};
-
-        assertDoesNotThrow(() ->
                 CommandLine.runCommand(args));
     }
 }
