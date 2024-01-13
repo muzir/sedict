@@ -100,8 +100,8 @@ public class DatabaseSetupCommand implements Runnable {
             });
         } catch (SQLException e) {
             throw new RuntimeException(String.format(
-                    "Failed to connect to database, check your database url %s and credentials, user: %, password:%s",
-                    databaseUrlBuilder, rdbmsUser, rdbmsPassword));
+                    "Failed to connect to database, check your database url: %s and credentials, user: %s, password:%s",
+                    databaseUrlBuilder.toString(), rdbmsUser, rdbmsPassword));
         }
     }
 

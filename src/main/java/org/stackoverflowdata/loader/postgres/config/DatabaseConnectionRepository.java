@@ -16,13 +16,11 @@ public class DatabaseConnectionRepository {
 
 
     public void connect() throws SQLException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CONNECTION_TEST_QUERY)) {
-
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(CONNECTION_TEST_QUERY);
             preparedStatement.executeQuery();
-
         } catch (SQLException e) {
-            System.out.println("Failed to connect to database");
+            System.out.println("Failed to connect to database: " + e.getMessage());
             throw e;
         }
     }
