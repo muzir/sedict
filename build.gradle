@@ -4,17 +4,18 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "gradle.plugin.com.github.johnrengelman:shadow:8.0.0"
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:8.3.6'
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.gradleup.shadow' version '8.3.6'
     id 'java'
 }
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'com.gradleup.shadow'
 
 group = 'org.stackoverflowdata'
 version = '0.1'
