@@ -35,7 +35,7 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
       - image: cimg/openjdk:21.0
-      - image: cimg/postgres:16.0
+      - image: cimg/postgres:17.4
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mysecretpassword
