@@ -28,7 +28,7 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
-    implementation group: 'com.github.rvesse', name: 'airline', version: '3.0.0'
+    implementation group: 'com.github.rvesse', name: 'airline', version: '3.1.0'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.38'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
